@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->writeButton,&QPushButton::clicked,this,&MainWindow::writerSerialPortFromButton);
     //thread->start();
     findPortTimer.start(findPortTimerPeriod);
+    m_standardOutput<<"hi"<<endl;
+
 }
 
 MainWindow::~MainWindow()
@@ -90,12 +92,19 @@ void MainWindow::showHeartBeat(const QString &s)
 
 void MainWindow::findPort()
 {
+    QString temp=ui->serialPortComboBox->currentText();
+    int currentIndex=0;
     int intNum=0;
     intNum = ui->serialPortComboBox->count();
     for(;intNum>0;intNum--)ui->serialPortComboBox->removeItem(intNum-1);
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos)
+    {
         ui->serialPortComboBox->addItem(info.portName());//查找可用的端口
+    }
+    currentIndex=ui->serialPortComboBox->findText(temp);
+    if(currentIndex!=-1)ui->serialPortComboBox->setCurrentIndex(currentIndex);
+
     if (!findPortTimer.isActive())
         findPortTimer.start(findPortTimerPeriod);
 }

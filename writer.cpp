@@ -42,6 +42,15 @@ void writer::handleError(QSerialPort::SerialPortError serialPortError)
 void writer::write()
 {
     code();
+    QByteArray temp;
+    temp.resize(1);
+    m_standardOutput<<"writer: message to send:";
+    for(int i=0;i<6+DLC;i++)
+    {
+        temp[0]=m_writeData[i];
+        m_standardOutput<<temp.toHex();
+    }
+    m_standardOutput<<endl;
     qint64 bytesWritten = m_serialPort->write(m_writeData);//在这一步写
 
     if (bytesWritten == -1) {
@@ -50,7 +59,7 @@ void writer::write()
         m_standardOutput << QObject::tr("Failed to write all the data to port %1, error: %2").arg(m_serialPort->portName()).arg(m_serialPort->errorString()) << endl;
     }
 
-    m_timer.start(5000);
+    //m_timer.start(5000);
 }
 
 void writer::code()
