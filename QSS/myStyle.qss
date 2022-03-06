@@ -1,0 +1,28 @@
+QCheckBox{
+    spacing: 2px;
+}
+
+QCheckBox::indicator{
+    width: 45px;
+    height: 30px;
+}
+
+QCheckBox::indicator:unchecked{
+    image:url(:/image/checkbox/checkbox2.png);
+}
+
+QCheckBox::indicator:enabled:checked {
+        image: url(:/image/checkbox/checkbox1.png);
+}
+
+QCheckBox::indicator:disabled:checked {
+        image: url(:/image/checkbox/checkbox1.png);
+}
+
+
+QCheckBox::indicator:checked{
+        image:url(:/image/checkbox/checkbox1.png);
+}
+
+
+

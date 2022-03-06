@@ -17,7 +17,7 @@ class writer : public QObject
 public:
     explicit writer(QSerialPort *serialPort, QObject *parent = nullptr);
     ~writer();
-    int ID;
+    QByteArray ID;
     int DLC;
     QByteArray CANDataMessange;
     void write();

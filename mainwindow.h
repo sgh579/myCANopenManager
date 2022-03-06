@@ -44,6 +44,7 @@ private slots:
     void findPort();//主动更新可用串口
     void deBugTimeout();//定时打印调试信息
     void writerSerialPortFromButton();
+    void setIOCheckBox(bool DOChange,bool DIChange,uchar DOColor,uchar DIColor);
 public slots:
     void timeToShowSerialMessage();//在表格内显示由串口接收到的特定字符串
 

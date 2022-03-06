@@ -29,6 +29,7 @@ private slots:
     void decode();
 signals:
     void timeToShow();
+    void setIOCheckBoxSignal(bool DOChange,bool DIChange,uchar DOColor,uchar DIColor);
 private:
     QSerialPort *m_serialPort;
     QByteArray  m_readData;
@@ -36,8 +37,10 @@ private:
     QTimer      m_timer;
 
     QTimer decodeTimer;
+    int decodeTimerPeriod;
+    int printReadDataPeriod;
 public:
-    int ID;
+    QByteArray ID;
     int DLC;
     QByteArray CANDataMessange;
 };

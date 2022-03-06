@@ -20,56 +20,6 @@
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QTableWidget" name="tableWidget">
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
          <column>
           <property name="text">
            <string>ID</string>
@@ -199,14 +149,14 @@
        <item>
         <widget class="QPushButton" name="pushButton_22">
          <property name="text">
-          <string>task1</string>
+          <string>启动从站</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_21">
          <property name="text">
-          <string>task2</string>
+          <string>设置输出状态</string>
          </property>
         </widget>
        </item>
@@ -241,58 +191,58 @@
         <widget class="QWidget" name="widget_5" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QPushButton" name="pushButton_10">
+           <widget class="QCheckBox" name="checkBox_8">
             <property name="text">
-             <string>D0 0</string>
+             <string>DO7</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_11">
-            <property name="text">
-             <string>D01</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_12">
-            <property name="text">
-             <string>DO2</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_13">
-            <property name="text">
-             <string>DO3</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_14">
-            <property name="text">
-             <string>DO4</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_15">
-            <property name="text">
-             <string>DO5</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_16">
+           <widget class="QCheckBox" name="checkBox_7">
             <property name="text">
              <string>DO6</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_17">
+           <widget class="QCheckBox" name="checkBox_6">
             <property name="text">
-             <string>DO7</string>
+             <string>D05</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_5">
+            <property name="text">
+             <string>DO4</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_4">
+            <property name="text">
+             <string>DO3</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_3">
+            <property name="text">
+             <string>DO2</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_2">
+            <property name="text">
+             <string>D01</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox">
+            <property name="text">
+             <string>DO0</string>
             </property>
            </widget>
           </item>
@@ -303,58 +253,82 @@
         <widget class="QWidget" name="widget_4" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QCheckBox" name="checkBox_15">
             <property name="text">
-             <string>DI0</string>
+             <string>DI7</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
-            <property name="text">
-             <string>DI1</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_4">
-            <property name="text">
-             <string>DI2</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_8">
-            <property name="text">
-             <string>DI3</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_9">
-            <property name="text">
-             <string>DI4</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_7">
-            <property name="text">
-             <string>DI5</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QCheckBox" name="checkBox_14">
             <property name="text">
              <string>DI6</string>
             </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QCheckBox" name="checkBox_13">
             <property name="text">
-             <string>DI7</string>
+             <string>DI5</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_12">
+            <property name="text">
+             <string>DI4</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_11">
+            <property name="text">
+             <string>DI3</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_10">
+            <property name="text">
+             <string>DI2</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_16">
+            <property name="text">
+             <string>DI1</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_9">
+            <property name="text">
+             <string>DI0</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

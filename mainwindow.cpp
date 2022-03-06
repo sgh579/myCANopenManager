@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QLabel>
 #include <QPushButton>
+#include <QCheckBox>
 #include <QtSerialPort/QSerialPortInfo>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -29,6 +30,125 @@ MainWindow::MainWindow(QWidget *parent)
     //thread->start();
     findPortTimer.start(findPortTimerPeriod);
     m_standardOutput<<"hi"<<endl;
+    ui->writeButton->setEnabled(0);
+    ui->lineEdit->setEnabled(0);
+    ui->lineEdit_2->setEnabled(0);
+    ui->lineEdit_3->setEnabled(0);
+
+//设置样式
+    {
+        connect(ui->checkBox,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox->setCheckState(Qt::Checked);
+            else
+                ui->checkBox->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_2,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_2->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_2->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_3,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_3->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_3->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_4,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_4->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_4->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_5,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_5->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_5->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_6,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_6->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_6->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_7,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_7->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_7->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_8,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_8->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_8->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_9,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_9->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_9->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_10,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_10->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_10->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_11,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_11->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_11->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_12,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_12->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_12->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_13,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_13->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_13->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_14,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_14->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_14->setCheckState(Qt::Unchecked);
+        });
+
+        connect(ui->checkBox_15,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                ui->checkBox_15->setCheckState(Qt::Checked);
+            else
+                ui->checkBox_15->setCheckState(Qt::Unchecked);
+        });
+
+
+    }
+
+
+    //setIOCheckBox(0xaa,0x55);
+    setIOCheckBox(1,0,0xaa,0x55);
+
 
 }
 
@@ -50,19 +170,33 @@ void MainWindow::setPortParameter()
 //    else emit debugSignal(tr(" open %1 successfully")
 //                    .arg(serialPort.portName()));
     if(!serialPort.open(QIODevice::ReadWrite))
+    {
         qDebug()<<tr("can't open %1 ,error code %2")
                   .arg(serialPort.portName()).arg(serialPort.error())<<endl;
+        ui->writeButton->setEnabled(0);
+        ui->lineEdit->setEnabled(0);
+        ui->lineEdit_2->setEnabled(0);
+        ui->lineEdit_3->setEnabled(0);
+        return;
+    }
     else
         qDebug()<<tr(" open %1 successfully")
                   .arg(serialPort.portName())<<endl;
     serialPortReader = new reader(&serialPort);//serialPortReader对象初始化
     connect(serialPortReader,&reader::timeToShow,this,&MainWindow::timeToShowSerialMessage);
+    connect(serialPortReader,&reader::setIOCheckBoxSignal,this,&MainWindow::setIOCheckBox);
     //timeToShowSerialMessage();
     qDebug()<<"reader object built successfully"<<endl;
     serialPortWriter = new writer(&serialPort);
     m_standardOutput<<"writer object built successfully"<<endl;
     //thread->transaction(ui->serialPortComboBox->currentText(),serialPortBaudRate);
     //thread->start();
+    ui->writeButton->setEnabled(1);
+    ui->lineEdit->setEnabled(1);
+    ui->lineEdit_2->setEnabled(1);
+    ui->lineEdit_3->setEnabled(1);
+
+
 }
 
 void MainWindow::showMessage(const QString &s1,const QString &s2,const QString &s3)
@@ -78,7 +212,7 @@ void MainWindow::showMessage(const QString &s1,const QString &s2,const QString &
 
 void MainWindow::timeToShowSerialMessage()
 {
-    QString IDStr = QString::number(serialPortReader->ID);
+    QString IDStr = serialPortReader->ID.toHex();
     QString DLCStr = QString::number(serialPortReader->DLC);
     QString HEXStr = serialPortReader->CANDataMessange.toHex();
     MainWindow::showMessage(IDStr,DLCStr,HEXStr);
@@ -130,16 +264,79 @@ void MainWindow::deBugTimeout()
 void MainWindow::writerSerialPortFromButton()
 {
     QString HEX=ui->lineEdit->text();
-    serialPortWriter->ID=ui->lineEdit_2->text().toInt();
+    QString IDStr=ui->lineEdit_2->text();
+    //serialPortWriter->ID=ui->lineEdit_2->text()();
+    QByteArray temp1=QByteArray::fromStdString(IDStr.toStdString());
+    serialPortWriter->ID=QByteArray::fromHex(temp1);
     serialPortWriter->DLC=ui->lineEdit_3->text().toInt();
-    QByteArray temp=QByteArray::fromStdString(HEX.toStdString());
-    serialPortWriter->CANDataMessange=QByteArray::fromHex(temp);
+    QByteArray temp2=QByteArray::fromStdString(HEX.toStdString());
+    serialPortWriter->CANDataMessange=QByteArray::fromHex(temp2);
     serialPortWriter->write();
 }
 
 
+//void MainWindow::setBulbButtonState(uchar DOColor,uchar DIColor)
+//{
 
+//}
 
+void MainWindow::setIOCheckBox(bool DOChange,bool DIChange,uchar DOColor,uchar DIColor)
+{
+    if(DIChange){
+        //DI 0
+        if((uchar)(0x01 & DIColor))ui->checkBox_9->setCheckState(Qt::Checked);
+        else ui->checkBox_9->setCheckState(Qt::Unchecked);
+        //DI 1
+        if((uchar)(0x02 & DIColor))ui->checkBox_16->setCheckState(Qt::Checked);
+        else ui->checkBox_16->setCheckState(Qt::Unchecked);
+        //DI 2
+        if((uchar)(0x04 & DIColor))ui->checkBox_10->setCheckState(Qt::Checked);
+        else ui->checkBox_10->setCheckState(Qt::Unchecked);
+        //DI 3
+        if((uchar)(0x08 & DIColor))ui->checkBox_11->setCheckState(Qt::Checked);
+        else ui->checkBox_11->setCheckState(Qt::Unchecked);
+        //DI 4
+        if((uchar)(0x010 & DIColor))ui->checkBox_12->setCheckState(Qt::Checked);
+        else ui->checkBox_12->setCheckState(Qt::Unchecked);
+        //DI 5
+        if((uchar)(0x020 & DIColor))ui->checkBox_13->setCheckState(Qt::Checked);
+        else ui->checkBox_13->setCheckState(Qt::Unchecked);
+        //DI 6
+        if((uchar)(0x040 & DIColor))ui->checkBox_14->setCheckState(Qt::Checked);
+        else ui->checkBox_14->setCheckState(Qt::Unchecked);
+        //DI 7
+        if((uchar)(0x080 & DIColor))ui->checkBox_15->setCheckState(Qt::Checked);
+        else ui->checkBox_15->setCheckState(Qt::Unchecked);
+    }
+    if(DOChange)
+    {
+        //DO 0
+        if((uchar)(0x01 & DOColor))ui->checkBox->setCheckState(Qt::Checked);
+        else ui->checkBox->setCheckState(Qt::Unchecked);
+        //DO 1
+        if((uchar)(0x02 & DOColor))ui->checkBox_2->setCheckState(Qt::Checked);
+        else ui->checkBox_2->setCheckState(Qt::Unchecked);
+        //DO 2
+        if((uchar)(0x04 & DOColor))ui->checkBox_3->setCheckState(Qt::Checked);
+        else ui->checkBox_3->setCheckState(Qt::Unchecked);
+        //DO 3
+        if((uchar)(0x08 & DOColor))ui->checkBox_4->setCheckState(Qt::Checked);
+        else ui->checkBox_4->setCheckState(Qt::Unchecked);
+        //DO 4
+        if((uchar)(0x010 & DOColor))ui->checkBox_5->setCheckState(Qt::Checked);
+        else ui->checkBox_5->setCheckState(Qt::Unchecked);
+        //DO 5
+        if((uchar)(0x020 & DOColor))ui->checkBox_6->setCheckState(Qt::Checked);
+        else ui->checkBox_6->setCheckState(Qt::Unchecked);
+        //DO 6
+        if((uchar)(0x040 & DOColor))ui->checkBox_7->setCheckState(Qt::Checked);
+        else ui->checkBox_7->setCheckState(Qt::Unchecked);
+        //DO 7
+        if((uchar)(0x080 & DOColor))ui->checkBox_8->setCheckState(Qt::Checked);
+        else ui->checkBox_8->setCheckState(Qt::Unchecked);
+    }
+
+}
 
 
 

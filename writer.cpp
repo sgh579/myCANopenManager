@@ -11,6 +11,7 @@ writer::writer(QSerialPort *serialPort, QObject *parent)
     connect(m_serialPort, static_cast<void (QSerialPort::*)(QSerialPort::SerialPortError)>(&QSerialPort::error),
             this, &writer::handleError);
     connect(&m_timer, &QTimer::timeout, this, &writer::handleTimeout);
+    ID.resize(2);
 }
 
 writer::~writer()
@@ -45,7 +46,7 @@ void writer::write()
     QByteArray temp;
     temp.resize(1);
     m_standardOutput<<"writer: message to send:";
-    for(int i=0;i<6+DLC;i++)
+    for(int i=0;i<7+DLC;i++)
     {
         temp[0]=m_writeData[i];
         m_standardOutput<<temp.toHex();
@@ -66,15 +67,16 @@ void writer::code()
 {
     int i;
     QByteArray temp=QByteArray::fromHex("fffe");
-    m_writeData.resize(6+DLC);
+    m_writeData.resize(7+DLC);
     m_writeData[0]=temp[0];
     m_writeData[1]=temp[0];
-    m_writeData[2]=ID;
-    m_writeData[3]=DLC;
+    m_writeData[2]=ID[0];
+    m_writeData[3]=ID[1];
+    m_writeData[4]=DLC;
     for(i=0;i<DLC;i++)
     {
-        m_writeData[4+i]=CANDataMessange[i];
+        m_writeData[5+i]=CANDataMessange[i];
     }
-    m_writeData[4+DLC]=temp[1];
     m_writeData[5+DLC]=temp[1];
+    m_writeData[6+DLC]=temp[1];
 }
