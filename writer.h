@@ -25,6 +25,8 @@ private slots:
     void handleBytesWritten(qint64 bytes);
     void handleTimeout();
     void handleError(QSerialPort::SerialPortError error);
+signals:
+    void timeToShowWritten();
 
 private:
     QSerialPort     *m_serialPort;

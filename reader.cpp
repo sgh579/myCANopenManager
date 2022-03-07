@@ -104,12 +104,12 @@ m_readData.remove(frameHeadLocation,7+DLC);//从字节队列中删除这一帧ca
 //qDebug()<<"HEX:"<<CANDataMessange.toHex()<<endl;
 
 emit timeToShow();
-QByteArray temp1=QByteArray::fromHex("18");
-if(ID[0]==temp1[0] && DLC==1)
-{
-    uchar DIStatus=CANDataMessange[0];
-    emit setIOCheckBoxSignal(0,1,0,DIStatus);
-}
+//QByteArray temp1=QByteArray::fromHex("18");
+//if(ID[0]==temp1[0] && DLC==1)
+//{
+//    uchar DIStatus=CANDataMessange[0];
+//    emit setIOCheckBoxSignal(0,1,0,DIStatus);
+//}
 
 
 

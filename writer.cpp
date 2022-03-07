@@ -59,7 +59,7 @@ void writer::write()
     } else if (bytesWritten != m_writeData.size()) {
         m_standardOutput << QObject::tr("Failed to write all the data to port %1, error: %2").arg(m_serialPort->portName()).arg(m_serialPort->errorString()) << endl;
     }
-
+    emit timeToShowWritten();
     //m_timer.start(5000);
 }
 

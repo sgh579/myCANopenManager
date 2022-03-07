@@ -24,9 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->connectPushButton,&QPushButton::clicked,this,&MainWindow::setPortParameter);
     connect(ui->findPortButton,&QPushButton::clicked,this,&MainWindow::findPort);
     connect(&findPortTimer,&QTimer::timeout,this,&MainWindow::findPort);
-    connect(this,&MainWindow::showMessageSignal,this,&MainWindow::showMessage);
+ //   connect(this,&MainWindow::showMessageSignal,this,&MainWindow::showMessage);
     //connect(&deBugTimer,&QTimer::timeout, this, &MainWindow::deBugTimeout);
     connect(ui->writeButton,&QPushButton::clicked,this,&MainWindow::writerSerialPortFromButton);
+    connect(ui->pushButton_22,&QPushButton::clicked,this,&MainWindow::startSlaveEquipment);
     //thread->start();
     findPortTimer.start(findPortTimerPeriod);
     m_standardOutput<<"hi"<<endl;
@@ -188,6 +189,7 @@ void MainWindow::setPortParameter()
     //timeToShowSerialMessage();
     qDebug()<<"reader object built successfully"<<endl;
     serialPortWriter = new writer(&serialPort);
+    connect(serialPortWriter,&writer::timeToShowWritten,this,&MainWindow::timeToShowSerialMessageWritten);
     m_standardOutput<<"writer object built successfully"<<endl;
     //thread->transaction(ui->serialPortComboBox->currentText(),serialPortBaudRate);
     //thread->start();
@@ -199,23 +201,74 @@ void MainWindow::setPortParameter()
 
 }
 
-void MainWindow::showMessage(const QString &s1,const QString &s2,const QString &s3)
+void MainWindow::showMessage(const QString &s1,const QString &s2,const QString &s3,int direction)
 {
     int rowIndex=ui->tableWidget->rowCount();
     ui->tableWidget->insertRow(rowIndex);
     ui->tableWidget->setItem(rowIndex,0,new QTableWidgetItem(s1));
     ui->tableWidget->setItem(rowIndex,1,new QTableWidgetItem(s2));
     ui->tableWidget->setItem(rowIndex,2,new QTableWidgetItem(s3));
+    if(direction==1)ui->tableWidget->setItem(rowIndex,3,new QTableWidgetItem("发送"));
+    if(direction==0)ui->tableWidget->setItem(rowIndex,3,new QTableWidgetItem("接收"));
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//自适应列宽
     ui->tableWidget->scrollToBottom();
 }
+void MainWindow::timeToShowSerialMessageWritten()
+{
+    QString IDStr = serialPortWriter->ID.toHex();
+    QString DLCStr = QString::number(serialPortWriter->DLC);
+    QString HEXStr = serialPortWriter->CANDataMessange.toHex();
+    showMessage(IDStr,DLCStr,HEXStr,1);
 
+}
 void MainWindow::timeToShowSerialMessage()
 {
     QString IDStr = serialPortReader->ID.toHex();
     QString DLCStr = QString::number(serialPortReader->DLC);
     QString HEXStr = serialPortReader->CANDataMessange.toHex();
-    MainWindow::showMessage(IDStr,DLCStr,HEXStr);
+    QByteArray temp=QByteArray::fromHex("7f05");
+
+    //m_standardOutput<<"IDStr.toInt()/100"<<(IDStr.toInt()/100)<<endl;
+
+    if((IDStr.toInt()/100==7) && serialPortReader->CANDataMessange[0]==temp[0])//发现处于预操作态的设备
+    {
+        int idTemp=IDStr.toInt()-700;
+        equipment = new GCAN4055(idTemp);
+        ui->label_2->setText(QString::number(idTemp));
+        ui->label_4->setText(tr("预操作"));
+    }
+    if((IDStr.toInt()/100==7)  && serialPortReader->CANDataMessange[0]==temp[1])//发现处于操作态的设备
+    {
+        equipment->status=GCAN4055::status_type::operational;
+        ui->label_4->setText(tr("操作"));
+    }
+    if(IDStr.toInt()==(180+equipment->ID))//TPDO
+    {
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x1);
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x2)>>1;
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x4)>>2;
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x8)>>3;
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x10)>>4;
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x20)>>5;
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x40)>>6;
+        equipment->DI[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x80)>>7;
+        setIOCheckBox(1,0,serialPortReader->CANDataMessange[0],0);
+    }
+    if(IDStr.toInt()==(200+equipment->ID))//TPDO
+    {
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x1);
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x2)>>1;
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x4)>>2;
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x8)>>3;
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x10)>>4;
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x20)>>5;
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x40)>>6;
+        equipment->DO[0]=(uchar)(serialPortReader->CANDataMessange[0] & 0x80)>>7;
+        setIOCheckBox(0,1,0,serialPortReader->CANDataMessange[0]);
+    }
+
+
+    showMessage(IDStr,DLCStr,HEXStr,0);
 }
 
 void MainWindow::showHeartBeat(const QString &s)
@@ -275,10 +328,18 @@ void MainWindow::writerSerialPortFromButton()
 }
 
 
-//void MainWindow::setBulbButtonState(uchar DOColor,uchar DIColor)
-//{
+void MainWindow::startSlaveEquipment()
+{
+    QString HEX="0100";
+    QString IDStr="0000";
+    QByteArray temp1=QByteArray::fromStdString(IDStr.toStdString());
+    QByteArray temp2=QByteArray::fromStdString(HEX.toStdString());
+    serialPortWriter->ID=QByteArray::fromHex(temp1);
+    serialPortWriter->DLC=2;
+    serialPortWriter->CANDataMessange=QByteArray::fromHex(temp2);
+    serialPortWriter->write();
 
-//}
+}
 
 void MainWindow::setIOCheckBox(bool DOChange,bool DIChange,uchar DOColor,uchar DIColor)
 {
