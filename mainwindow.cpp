@@ -4,6 +4,9 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QtSerialPort/QSerialPortInfo>
+#include "dialog.h"
+#include "ui_fhd.h"
+#include "fhd.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,9 +15,13 @@ MainWindow::MainWindow(QWidget *parent)
     , findPortTimerPeriod(1000)
 {
     ui->setupUi(this);
-    //thread = new serialThread(this);
+    d =new fhd(this);
+    ui->tableWidget->setAlternatingRowColors(true);
+
+    connect(ui->show,&QPushButton::clicked,d,&QWidget::show);
+
     setFixedSize(792,647);
-    setWindowTitle(tr("my CANopen Manager"));
+    setWindowTitle(tr("My CANopen Manager"));
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos)
         ui->serialPortComboBox->addItem(info.portName());//查找可用的端口
@@ -38,109 +45,116 @@ MainWindow::MainWindow(QWidget *parent)
 
 //设置样式
     {
-        connect(ui->checkBox,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO0,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox->setCheckState(Qt::Checked);
+                d->uiD->DO0->setCheckState(Qt::Checked);
             else
-                ui->checkBox->setCheckState(Qt::Unchecked);
+                d->uiD->DO0->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_2,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO1,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_2->setCheckState(Qt::Checked);
+                d->uiD->DO1->setCheckState(Qt::Checked);
             else
-                ui->checkBox_2->setCheckState(Qt::Unchecked);
+                d->uiD->DO1->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_3,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO2,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_3->setCheckState(Qt::Checked);
+                d->uiD->DO2->setCheckState(Qt::Checked);
             else
-                ui->checkBox_3->setCheckState(Qt::Unchecked);
+                d->uiD->DO2->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_4,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO3,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_4->setCheckState(Qt::Checked);
+                d->uiD->DO3->setCheckState(Qt::Checked);
             else
-                ui->checkBox_4->setCheckState(Qt::Unchecked);
+                d->uiD->DO3->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_5,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO4,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_5->setCheckState(Qt::Checked);
+                d->uiD->DO4->setCheckState(Qt::Checked);
             else
-                ui->checkBox_5->setCheckState(Qt::Unchecked);
+                d->uiD->DO4->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_6,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO5,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_6->setCheckState(Qt::Checked);
+                d->uiD->DO5->setCheckState(Qt::Checked);
             else
-                ui->checkBox_6->setCheckState(Qt::Unchecked);
+                d->uiD->DO5->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_7,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO6,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_7->setCheckState(Qt::Checked);
+                d->uiD->DO6->setCheckState(Qt::Checked);
             else
-                ui->checkBox_7->setCheckState(Qt::Unchecked);
+                d->uiD->DO6->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_8,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DO7,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_8->setCheckState(Qt::Checked);
+                d->uiD->DO7->setCheckState(Qt::Checked);
             else
-                ui->checkBox_8->setCheckState(Qt::Unchecked);
+                d->uiD->DO7->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_9,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DI0,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_9->setCheckState(Qt::Checked);
+                d->uiD->DI0->setCheckState(Qt::Checked);
             else
-                ui->checkBox_9->setCheckState(Qt::Unchecked);
+                d->uiD->DI0->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_10,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DI1,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_10->setCheckState(Qt::Checked);
+                d->uiD->DI1->setCheckState(Qt::Checked);
             else
-                ui->checkBox_10->setCheckState(Qt::Unchecked);
+                d->uiD->DI1->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_11,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DI2,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_11->setCheckState(Qt::Checked);
+                d->uiD->DI2->setCheckState(Qt::Checked);
             else
-                ui->checkBox_11->setCheckState(Qt::Unchecked);
+                d->uiD->DI2->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_12,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DI3,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_12->setCheckState(Qt::Checked);
+                d->uiD->DI3->setCheckState(Qt::Checked);
             else
-                ui->checkBox_12->setCheckState(Qt::Unchecked);
+                d->uiD->DI3->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_13,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DI4,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_13->setCheckState(Qt::Checked);
+                d->uiD->DI4->setCheckState(Qt::Checked);
             else
-                ui->checkBox_13->setCheckState(Qt::Unchecked);
+                d->uiD->DI4->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_14,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DI5,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_14->setCheckState(Qt::Checked);
+                d->uiD->DI5->setCheckState(Qt::Checked);
             else
-                ui->checkBox_14->setCheckState(Qt::Unchecked);
+                d->uiD->DI5->setCheckState(Qt::Unchecked);
         });
 
-        connect(ui->checkBox_15,&QCheckBox::stateChanged,[=](int state){
+        connect(d->uiD->DI6,&QCheckBox::stateChanged,[=](int state){
             if (state==2)
-                ui->checkBox_15->setCheckState(Qt::Checked);
+                d->uiD->DI6->setCheckState(Qt::Checked);
             else
-                ui->checkBox_15->setCheckState(Qt::Unchecked);
+                d->uiD->DI6->setCheckState(Qt::Unchecked);
+        });
+
+        connect(d->uiD->DI7,&QCheckBox::stateChanged,[=](int state){
+            if (state==2)
+                d->uiD->DI7->setCheckState(Qt::Checked);
+            else
+                d->uiD->DI7->setCheckState(Qt::Unchecked);
         });
 
 
@@ -345,56 +359,56 @@ void MainWindow::setIOCheckBox(bool DOChange,bool DIChange,uchar DOColor,uchar D
 {
     if(DIChange){
         //DI 0
-        if((uchar)(0x01 & DIColor))ui->checkBox_9->setCheckState(Qt::Checked);
-        else ui->checkBox_9->setCheckState(Qt::Unchecked);
+        if((uchar)(0x01 & DIColor))d->uiD->DI0->setCheckState(Qt::Checked);
+        else d->uiD->DI0->setCheckState(Qt::Unchecked);
         //DI 1
-        if((uchar)(0x02 & DIColor))ui->checkBox_16->setCheckState(Qt::Checked);
-        else ui->checkBox_16->setCheckState(Qt::Unchecked);
+        if((uchar)(0x02 & DIColor))d->uiD->DI1->setCheckState(Qt::Checked);
+        else d->uiD->DI1->setCheckState(Qt::Unchecked);
         //DI 2
-        if((uchar)(0x04 & DIColor))ui->checkBox_10->setCheckState(Qt::Checked);
-        else ui->checkBox_10->setCheckState(Qt::Unchecked);
+        if((uchar)(0x04 & DIColor))d->uiD->DI2->setCheckState(Qt::Checked);
+        else d->uiD->DI2->setCheckState(Qt::Unchecked);
         //DI 3
-        if((uchar)(0x08 & DIColor))ui->checkBox_11->setCheckState(Qt::Checked);
-        else ui->checkBox_11->setCheckState(Qt::Unchecked);
+        if((uchar)(0x08 & DIColor))d->uiD->DI3->setCheckState(Qt::Checked);
+        else d->uiD->DI3->setCheckState(Qt::Unchecked);
         //DI 4
-        if((uchar)(0x010 & DIColor))ui->checkBox_12->setCheckState(Qt::Checked);
-        else ui->checkBox_12->setCheckState(Qt::Unchecked);
+        if((uchar)(0x010 & DIColor))d->uiD->DI4->setCheckState(Qt::Checked);
+        else d->uiD->DI4->setCheckState(Qt::Unchecked);
         //DI 5
-        if((uchar)(0x020 & DIColor))ui->checkBox_13->setCheckState(Qt::Checked);
-        else ui->checkBox_13->setCheckState(Qt::Unchecked);
+        if((uchar)(0x020 & DIColor))d->uiD->DI5->setCheckState(Qt::Checked);
+        else d->uiD->DI5->setCheckState(Qt::Unchecked);
         //DI 6
-        if((uchar)(0x040 & DIColor))ui->checkBox_14->setCheckState(Qt::Checked);
-        else ui->checkBox_14->setCheckState(Qt::Unchecked);
+        if((uchar)(0x040 & DIColor))d->uiD->DI6->setCheckState(Qt::Checked);
+        else d->uiD->DI6->setCheckState(Qt::Unchecked);
         //DI 7
-        if((uchar)(0x080 & DIColor))ui->checkBox_15->setCheckState(Qt::Checked);
-        else ui->checkBox_15->setCheckState(Qt::Unchecked);
+        if((uchar)(0x080 & DIColor))d->uiD->DI7->setCheckState(Qt::Checked);
+        else d->uiD->DI7->setCheckState(Qt::Unchecked);
     }
     if(DOChange)
     {
         //DO 0
-        if((uchar)(0x01 & DOColor))ui->checkBox->setCheckState(Qt::Checked);
-        else ui->checkBox->setCheckState(Qt::Unchecked);
+        if((uchar)(0x01 & DOColor))d->uiD->DO0->setCheckState(Qt::Checked);
+        else d->uiD->DO0->setCheckState(Qt::Unchecked);
         //DO 1
-        if((uchar)(0x02 & DOColor))ui->checkBox_2->setCheckState(Qt::Checked);
-        else ui->checkBox_2->setCheckState(Qt::Unchecked);
+        if((uchar)(0x02 & DOColor))d->uiD->DO1->setCheckState(Qt::Checked);
+        else d->uiD->DO1->setCheckState(Qt::Unchecked);
         //DO 2
-        if((uchar)(0x04 & DOColor))ui->checkBox_3->setCheckState(Qt::Checked);
-        else ui->checkBox_3->setCheckState(Qt::Unchecked);
+        if((uchar)(0x04 & DOColor))d->uiD->DO2->setCheckState(Qt::Checked);
+        else d->uiD->DO2->setCheckState(Qt::Unchecked);
         //DO 3
-        if((uchar)(0x08 & DOColor))ui->checkBox_4->setCheckState(Qt::Checked);
-        else ui->checkBox_4->setCheckState(Qt::Unchecked);
+        if((uchar)(0x08 & DOColor))d->uiD->DO3->setCheckState(Qt::Checked);
+        else d->uiD->DO3->setCheckState(Qt::Unchecked);
         //DO 4
-        if((uchar)(0x010 & DOColor))ui->checkBox_5->setCheckState(Qt::Checked);
-        else ui->checkBox_5->setCheckState(Qt::Unchecked);
+        if((uchar)(0x010 & DOColor))d->uiD->DO4->setCheckState(Qt::Checked);
+        else d->uiD->DO4->setCheckState(Qt::Unchecked);
         //DO 5
-        if((uchar)(0x020 & DOColor))ui->checkBox_6->setCheckState(Qt::Checked);
-        else ui->checkBox_6->setCheckState(Qt::Unchecked);
+        if((uchar)(0x020 & DOColor))d->uiD->DO5->setCheckState(Qt::Checked);
+        else d->uiD->DO5->setCheckState(Qt::Unchecked);
         //DO 6
-        if((uchar)(0x040 & DOColor))ui->checkBox_7->setCheckState(Qt::Checked);
-        else ui->checkBox_7->setCheckState(Qt::Unchecked);
+        if((uchar)(0x040 & DOColor))d->uiD->DO6->setCheckState(Qt::Checked);
+        else d->uiD->DO6->setCheckState(Qt::Unchecked);
         //DO 7
-        if((uchar)(0x080 & DOColor))ui->checkBox_8->setCheckState(Qt::Checked);
-        else ui->checkBox_8->setCheckState(Qt::Unchecked);
+        if((uchar)(0x080 & DOColor))d->uiD->DO7->setCheckState(Qt::Checked);
+        else d->uiD->DO7->setCheckState(Qt::Unchecked);
     }
 
 }

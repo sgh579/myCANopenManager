@@ -1,0 +1,19 @@
+#include "widget.h"
+#include <QApplication>
+#include <QFile>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+
+
+    //获取并设置程序为自定义样式
+    QFile styleSheet(":/QSS/myStyle.qss");
+    styleSheet.open(QIODevice::ReadOnly);
+    a.setStyleSheet(styleSheet.readAll());
+
+    Widget w;
+    w.show();
+
+    return a.exec();
+}

@@ -23,7 +23,9 @@ SOURCES += \
     serialthread.cpp \
     test.cpp \
     writer.cpp \
-    mainwindow.cpp
+    mainwindow.cpp\
+    fhd.cpp
+
 
 HEADERS += \
     dialog.h \
@@ -32,16 +34,18 @@ HEADERS += \
     serialthread.h \
     test.h \
     writer.h \
-    mainwindow.h
+    mainwindow.h\
+    fhd.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui\
+    fhd.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-win32:CONFIG += console
+#win32:CONFIG += console
 
 RESOURCES += \
-    image.qrc
+    res.qrc

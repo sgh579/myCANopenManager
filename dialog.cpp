@@ -9,12 +9,11 @@ Dialog::Dialog(QWidget *parent)
     , openButton(new QPushButton(tr("open")))
     , num(0)
     , serialPort(new QSerialPort())
-    , serialPortComboBox(new QComboBox())
+    , serialPortComboBox(new QComboBox())    
 {
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos)
         serialPortComboBox->addItem(info.portName());//查找可用的端口
-    //ui->setupUi(this);
     auto mainLayout = new QGridLayout;//界面布局
     mainLayout->addWidget(sendButton,0,0,1,1);
     mainLayout->addWidget(takeButton,0,1,1,1);
@@ -75,4 +74,6 @@ void Dialog::openPort()
 
 
 }
+
+
 

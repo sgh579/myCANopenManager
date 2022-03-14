@@ -24,6 +24,7 @@ class Dialog : public QDialog
 
 public:
     explicit Dialog(QWidget *parent = nullptr);
+
 signals:
     void debugSignal(const QString &s);
 private slots:

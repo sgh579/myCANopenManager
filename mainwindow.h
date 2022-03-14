@@ -1,7 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "fhd.h"
 #include <QMainWindow>
+#include "dialog.h"
 #include <QPushButton>
 #include <QGridLayout>
 #include <QLabel>
@@ -64,5 +66,6 @@ private:
     QTimer findPortTimer;
     int findPortTimerPeriod;
     GCAN4055 *equipment;
+    fhd *d;
 };
 #endif // MAINWINDOW_H
