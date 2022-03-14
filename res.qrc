@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Image/checkbox1.png</file>
+        <file>Image/checkbox2.png</file>
+        <file>Image/checkbox3.png</file>
+        <file>Image/checkbox4.png</file>
+        <file>Image/checkbox5.png</file>
+        <file>Image/disabled.png</file>
+        <file>Image/sketch.png</file>
+        <file>QSS/myStyle.qss</file>
+        <file>Image/院徽.png</file>
+        <file>Image/connect.png</file>
+        <file>Image/act.png</file>
+        <file>Image/search.png</file>
+        <file>Image/send.png</file>
+        <file>Image/status.png</file>
+        <file>Image/set.png</file>
+    </qresource>
+</RCC>
