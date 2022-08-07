@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>847</width>
-    <height>611</height>
+    <width>1078</width>
+    <height>514</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -228,7 +228,7 @@
        <item>
         <widget class="QPushButton" name="pushButton_21">
          <property name="text">
-          <string>设置输出状态</string>
+          <string>debug</string>
          </property>
          <property name="icon">
           <iconset resource="res.qrc">
@@ -237,6 +237,11 @@
         </widget>
        </item>
       </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_4" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_3"/>
      </widget>
     </item>
    </layout>

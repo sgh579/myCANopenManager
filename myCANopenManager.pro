@@ -18,9 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     gcan4055.cpp \
     main.cpp \
-    dialog.cpp \
     reader.cpp \
-    serialthread.cpp \
     test.cpp \
     writer.cpp \
     mainwindow.cpp\
@@ -28,10 +26,8 @@ SOURCES += \
 
 
 HEADERS += \
-    dialog.h \
     gcan4055.h \
     reader.h \
-    serialthread.h \
     test.h \
     writer.h \
     mainwindow.h\

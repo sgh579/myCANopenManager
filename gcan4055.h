@@ -14,7 +14,7 @@ public:
     int ID;
     enum status_type
     {
-        pre_operational,operational,stopped
+        pre_operational,operational,stopped,not_found
     }status;
 
 };

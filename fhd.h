@@ -16,7 +16,11 @@ public:
     ~fhd();
     Ui::Dialog *uiD;
 
-private:
+private slots:
+    void pushButtonSetDO();
+
+signals:
+    void fhdToMainwindowDOSignal(const uchar DOSetState);
 
 };
 #endif // DIALOG_H

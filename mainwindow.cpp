@@ -4,166 +4,84 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QtSerialPort/QSerialPortInfo>
-#include "dialog.h"
 #include "ui_fhd.h"
 #include "fhd.h"
+#include <typeinfo>
+#include <QList>
+#include <synchapi.h>
 
+
+//绘制主页面,完成部分初始化工作
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_standardOutput(stdout)
     , findPortTimerPeriod(1000)
 {
+    //一段小测试
+//    QList<QString> list;
+//    list<<"word1"<<"word2"<<"word3";
+//    for(int i=0;i<list.size();i++){
+//        m_standardOutput<<list[i]<<endl;
+//    }
+
     ui->setupUi(this);
+
     d =new fhd(this);
+
+
     ui->tableWidget->setAlternatingRowColors(true);
 
     connect(ui->show,&QPushButton::clicked,d,&QWidget::show);
+    connect(d,&fhd::fhdToMainwindowDOSignal,this,&MainWindow::buttonTrigger_sendMessage);
 
     setFixedSize(792,647);
     setWindowTitle(tr("My CANopen Manager"));
+
+    //查找可用的端口
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos)
-        ui->serialPortComboBox->addItem(info.portName());//查找可用的端口
+        ui->serialPortComboBox->addItem(info.portName());
+
+    //备选的波特率
     ui->baudComboBox->addItem(tr("9600"));
     ui->baudComboBox->addItem(tr("115200"));
 
+    //连接串口
     connect(ui->connectPushButton,&QPushButton::clicked,this,&MainWindow::setPortParameter);
+
+    //手动刷新串口
     connect(ui->findPortButton,&QPushButton::clicked,this,&MainWindow::findPort);
+
+    //定时刷新串口
     connect(&findPortTimer,&QTimer::timeout,this,&MainWindow::findPort);
- //   connect(this,&MainWindow::showMessageSignal,this,&MainWindow::showMessage);
-    //connect(&deBugTimer,&QTimer::timeout, this, &MainWindow::deBugTimeout);
+
+
+    //发送
     connect(ui->writeButton,&QPushButton::clicked,this,&MainWindow::writerSerialPortFromButton);
+
+    //开启设备
     connect(ui->pushButton_22,&QPushButton::clicked,this,&MainWindow::startSlaveEquipment);
-    //thread->start();
+
+    //debug
+    connect(ui->pushButton_21,&QPushButton::clicked,this,&MainWindow::deBugByButton);
+
+
+
     findPortTimer.start(findPortTimerPeriod);
-    m_standardOutput<<"hi"<<endl;
+
+    //一开始没有连接串口的时候,锁起来一些输入控件
     ui->writeButton->setEnabled(0);
     ui->lineEdit->setEnabled(0);
     ui->lineEdit_2->setEnabled(0);
     ui->lineEdit_3->setEnabled(0);
 
-//设置样式
-    {
-        connect(d->uiD->DO0,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO0->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO0->setCheckState(Qt::Unchecked);
-        });
 
-        connect(d->uiD->DO1,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO1->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO1->setCheckState(Qt::Unchecked);
-        });
+    //设置IO口初始的样子
+    setIOCheckBox(1,0,0x01,0x55);
 
-        connect(d->uiD->DO2,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO2->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO2->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DO3,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO3->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO3->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DO4,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO4->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO4->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DO5,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO5->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO5->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DO6,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO6->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO6->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DO7,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DO7->setCheckState(Qt::Checked);
-            else
-                d->uiD->DO7->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI0,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI0->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI0->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI1,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI1->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI1->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI2,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI2->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI2->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI3,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI3->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI3->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI4,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI4->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI4->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI5,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI5->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI5->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI6,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI6->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI6->setCheckState(Qt::Unchecked);
-        });
-
-        connect(d->uiD->DI7,&QCheckBox::stateChanged,[=](int state){
-            if (state==2)
-                d->uiD->DI7->setCheckState(Qt::Checked);
-            else
-                d->uiD->DI7->setCheckState(Qt::Unchecked);
-        });
-
-
-    }
-
-
-    //setIOCheckBox(0xaa,0x55);
-    setIOCheckBox(1,0,0xaa,0x55);
-
+    //设置一个default的equipment
+    equipment = new GCAN4055(-1);
 
 }
 
@@ -173,6 +91,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//设置串口
 void MainWindow::setPortParameter()
 {
     serialPort.close();//先关上
@@ -215,6 +134,7 @@ void MainWindow::setPortParameter()
 
 }
 
+//在表格中显示报文信息
 void MainWindow::showMessage(const QString &s1,const QString &s2,const QString &s3,int direction)
 {
     int rowIndex=ui->tableWidget->rowCount();
@@ -227,6 +147,8 @@ void MainWindow::showMessage(const QString &s1,const QString &s2,const QString &
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//自适应列宽
     ui->tableWidget->scrollToBottom();
 }
+
+//由发送串口信息时发出的信号触发,在表格中打印出对应的信息
 void MainWindow::timeToShowSerialMessageWritten()
 {
     QString IDStr = serialPortWriter->ID.toHex();
@@ -235,6 +157,8 @@ void MainWindow::timeToShowSerialMessageWritten()
     showMessage(IDStr,DLCStr,HEXStr,1);
 
 }
+
+//由接收到串口信息时发出的信号触发,在表格中打印出对应的信息
 void MainWindow::timeToShowSerialMessage()
 {
     QString IDStr = serialPortReader->ID.toHex();
@@ -246,7 +170,7 @@ void MainWindow::timeToShowSerialMessage()
 
     if((IDStr.toInt()/100==7) && serialPortReader->CANDataMessange[0]==temp[0])//发现处于预操作态的设备
     {
-        int idTemp=IDStr.toInt()-700;
+        int idTemp=IDStr.toInt()-700;//设备ID
         equipment = new GCAN4055(idTemp);
         ui->label_2->setText(QString::number(idTemp));
         ui->label_4->setText(tr("预操作"));
@@ -285,12 +209,7 @@ void MainWindow::timeToShowSerialMessage()
     showMessage(IDStr,DLCStr,HEXStr,0);
 }
 
-void MainWindow::showHeartBeat(const QString &s)
-{
-    qDebug()<<s<<endl;
-
-}
-
+//寻找计算机可用的端口
 void MainWindow::findPort()
 {
     QString temp=ui->serialPortComboBox->currentText();
@@ -310,6 +229,15 @@ void MainWindow::findPort()
         findPortTimer.start(findPortTimerPeriod);
 }
 
+//由按钮触发打印调试信息
+void MainWindow::deBugByButton()
+{
+    m_standardOutput<<"deBugByButton"<<endl;
+//    QString buttonstate = d->uiD->DO0->checkState();
+    m_standardOutput<<"buttonstate"<<d->uiD->DO0->checkState()<<endl;
+}
+
+//设置一个定时器,定时打印调试信息
 void MainWindow::deBugTimeout()
 {
     int x=0;
@@ -328,6 +256,7 @@ void MainWindow::deBugTimeout()
         deBugTimer.start(1000);
 }
 
+//根据文本编辑的内容发送can报文
 void MainWindow::writerSerialPortFromButton()
 {
     QString HEX=ui->lineEdit->text();
@@ -342,6 +271,7 @@ void MainWindow::writerSerialPortFromButton()
 }
 
 
+//发出启动设备的命令,由按键触发
 void MainWindow::startSlaveEquipment()
 {
     QString HEX="0100";
@@ -355,6 +285,7 @@ void MainWindow::startSlaveEquipment()
 
 }
 
+//根据DOColor，DIColor的二进制每位上的0和1来确定输入输出的状态，用来绘制示意图
 void MainWindow::setIOCheckBox(bool DOChange,bool DIChange,uchar DOColor,uchar DIColor)
 {
     if(DIChange){
@@ -414,8 +345,28 @@ void MainWindow::setIOCheckBox(bool DOChange,bool DIChange,uchar DOColor,uchar D
 }
 
 
-
-
+// 发送RPDO（对于从站而言）
+// 入口参数:uchar DOSetState
+// 按二进制位对于8位DO
+// 解析DOSetState,发送报文
+// 报文格式:
+// 帧ID:0x200 + NodeID
+// DLC:1
+// HEX:DOSetState
+void MainWindow::buttonTrigger_sendMessage(uchar DOSetState)
+{
+    int IDInt = 200+equipment->ID;
+    QString IDStr = QString::number(IDInt);
+    QString DLCStr = "01";
+    QString HEXStr = QString::number(DOSetState);
+    m_standardOutput<<"DOSetState"<<DOSetState<<endl;
+    QByteArray temp1=QByteArray::fromStdString(IDStr.toStdString());
+    serialPortWriter->ID=QByteArray::fromHex(temp1);
+    serialPortWriter->DLC=1;
+    QByteArray temp2=QByteArray::fromStdString(HEXStr.toStdString());
+    serialPortWriter->CANDataMessange=QByteArray::fromHex(temp2);
+    serialPortWriter->write();
+}
 
 
 

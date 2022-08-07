@@ -266,6 +266,19 @@ O
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="setButton">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>40</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>设置输出状态DO</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="res.qrc"/>
