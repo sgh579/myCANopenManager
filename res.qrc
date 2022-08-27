@@ -15,6 +15,5 @@
         <file>Image/send.png</file>
         <file>Image/status.png</file>
         <file>Image/set.png</file>
-        <file>Image/web.jpg</file>
     </qresource>
 </RCC>

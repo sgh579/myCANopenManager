@@ -239,11 +239,6 @@
       </layout>
      </widget>
     </item>
-    <item>
-     <widget class="QWidget" name="widget_4" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_3"/>
-     </widget>
-    </item>
    </layout>
   </widget>
  </widget>
